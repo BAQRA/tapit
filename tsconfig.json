@@ -1,0 +1,9 @@
+{
+  // Solution file: each part of the project has its own settings.
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.worker.json" },
+    { "path": "./tsconfig.web.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}

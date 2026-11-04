@@ -1,0 +1,43 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  // Part of the free URL: https://<name>.<account-subdomain>.workers.dev
+  // NEVER rename once cards are written with the workers.dev link.
+  "name": "tapit",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-01",
+  "observability": { "enabled": true },
+
+  // Keep the free *.workers.dev address ON forever, even after adding tapit.ge:
+  // cards already written with it must keep working.
+  "workers_dev": true,
+
+  // The React dashboards built by Vite (web/ → dist/client; the Cloudflare Vite
+  // plugin fills in the directory). /admin runs through the Worker first so the
+  // password check happens before the admin page is served.
+  "assets": {
+    "binding": "ASSETS",
+    "run_worker_first": ["/admin", "/admin/*"],
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tapit",
+      // Replace with the id printed by `npx wrangler d1 create tapit`
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations",
+    },
+  ],
+
+  // ---------------------------------------------------------------------------
+  // When you buy the domain, uncomment both blocks below and run `npm run deploy`.
+  // Old cards keep working on workers.dev; new cards and owner links use go.tapit.ge.
+  // ---------------------------------------------------------------------------
+  // "routes": [{ "pattern": "go.tapit.ge", "custom_domain": true }],
+  // "vars": { "PUBLIC_BASE_URL": "https://go.tapit.ge" },
+
+  // Secrets (not in this file): ADMIN_PASSWORD, IP_SALT
+  //   local:      .dev.vars (see .dev.vars.example)
+  //   production: npx wrangler secret put ADMIN_PASSWORD
+}

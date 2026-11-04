@@ -1,0 +1,9 @@
+{
+  // The Cloudflare Worker (src/) and its tests run in the Workers runtime.
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": ["@cloudflare/vitest-plugin/types"]
+  },
+  "include": ["worker-configuration.d.ts", "src", "shared", "test"]
+}

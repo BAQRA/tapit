@@ -1,0 +1,10 @@
+{
+  // Build tooling config files run in Node.
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "allowImportingTsExtensions": true
+  },
+  "include": ["vite.config.ts", "vitest.config.ts", "test/constants.ts"]
+}

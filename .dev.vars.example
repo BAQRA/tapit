@@ -1,0 +1,6 @@
+# Local development secrets. Copy to .dev.vars (never commit .dev.vars).
+# In production set them with:
+#   npx wrangler secret put ADMIN_PASSWORD
+#   npx wrangler secret put IP_SALT
+ADMIN_PASSWORD=change-me
+IP_SALT=any-long-random-string

@@ -1,0 +1,57 @@
+/* Owner dashboard styles (on top of base.css). Customer-facing: a bit roomier. */
+
+body {
+  font-size: 15px;
+  line-height: 1.5;
+}
+.container {
+  max-width: 960px;
+}
+.panel {
+  border-radius: 12px;
+}
+.kpi__value {
+  font-size: 30px;
+}
+
+.brand {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+.business-name {
+  margin: 2px 0 0;
+  font-size: 22px;
+}
+
+.bar-chart--small {
+  height: 100px;
+}
+.bar-list__row {
+  font-size: 14px;
+}
+table {
+  font-size: 14px;
+}
+th,
+td {
+  padding: 8px;
+  white-space: normal;
+}
+
+.footnote {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.page-footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 0 16px 32px;
+}
+.page-footer a {
+  color: inherit;
+}
