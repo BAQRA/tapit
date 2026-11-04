@@ -17,6 +17,10 @@ export function useBusinessActions() {
   const setActive = useAdminAction((v: { id: string; active: boolean }) =>
     adminApi.updateBusiness(v.id, { active: v.active }),
   );
+  const setName = useAdminAction(
+    (v: { id: string; name: string }) => adminApi.updateBusiness(v.id, { name: v.name }),
+    { success: "Business renamed" },
+  );
   const setReviewUrl = useAdminAction(
     (v: { id: string; reviewUrl: string }) => adminApi.updateBusiness(v.id, { reviewUrl: v.reviewUrl }),
     { success: "Link updated: every card for this business now goes there" },
@@ -38,6 +42,11 @@ export function useBusinessActions() {
   return {
     togglePaused(business: BusinessRef) {
       setActive.mutate({ id: business.id, active: !business.active });
+    },
+
+    /** Resolves when saved; rejects on failure so the inline editor stays open. */
+    rename(business: BusinessRef, name: string) {
+      return setName.mutateAsync({ id: business.id, name });
     },
 
     changeReviewUrl(business: BusinessRef) {

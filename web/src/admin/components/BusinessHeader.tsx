@@ -5,6 +5,7 @@ import { formatNumber } from "../../lib/format";
 import { useCopy } from "../queries";
 import { useBusinessActions } from "../useBusinessActions";
 import { LinkButton } from "./LinkButton";
+import { RowActions } from "./RowActions";
 
 interface BusinessHeaderProps {
   business: BusinessStats;
@@ -43,23 +44,26 @@ export function BusinessHeader({ business, ownerUrl, days, onShowAll }: Business
         <strong>Owner dashboard:</strong>{" "}
         {ownerUrl ? (
           <>
-            <code>{ownerUrl}</code>
-            <br />
-            <LinkButton onClick={() => copy(ownerUrl)}>Copy link</LinkButton> ·{" "}
-            <a href={ownerUrl} target="_blank" rel="noopener noreferrer">
-              Open
-            </a>{" "}
-            · <LinkButton onClick={() => actions.resetOwnerLink(business.id)}>Reset link</LinkButton> ·{" "}
-            <LinkButton danger onClick={() => actions.turnOffOwnerLink(business.id)}>
-              Turn off
-            </LinkButton>
+            <code className="owner-url">{ownerUrl}</code>
+            <RowActions>
+              <LinkButton onClick={() => copy(ownerUrl)}>Copy link</LinkButton>
+              <a href={ownerUrl} target="_blank" rel="noopener noreferrer" className="link-button">
+                Open
+              </a>
+              <LinkButton onClick={() => actions.resetOwnerLink(business.id)}>Reset link</LinkButton>
+              <LinkButton danger onClick={() => actions.turnOffOwnerLink(business.id)}>
+                Turn off
+              </LinkButton>
+            </RowActions>
           </>
         ) : (
           <>
-            <span className="text-muted">not shared</span> ·{" "}
-            <LinkButton onClick={() => actions.createOwnerLink(business.id)}>
-              Create a link for the owner
-            </LinkButton>
+            <span className="text-muted">not shared</span>
+            <RowActions>
+              <LinkButton onClick={() => actions.createOwnerLink(business.id)}>
+                Create a link for the owner
+              </LinkButton>
+            </RowActions>
           </>
         )}
       </div>

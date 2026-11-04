@@ -109,3 +109,221 @@
   z-index: 5;
   max-width: calc(100% - 32px);
 }
+
+/* Inline editing (EditableText) */
+.editable {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.editable__edit {
+  border: none;
+  background: none;
+  padding: 0 2px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+}
+.editable__edit:hover {
+  color: var(--accent);
+}
+.editable--editing input {
+  width: 180px;
+  padding: 3px 6px;
+  font-size: 13px;
+}
+.editable__cancel {
+  color: var(--muted);
+}
+
+/* Row actions (RowActions): spaced text buttons on desktop */
+.row-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+}
+.business-header__owner .row-actions {
+  display: flex;
+  margin-top: 6px;
+}
+.owner-url {
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================================================
+   Responsive tables
+   Each table switches to one card per row when *its own* box is too narrow for
+   all columns: on phones and tablets, but also in a narrow desktop window.
+   ========================================================================== */
+
+.table-scroll {
+  container: table / inline-size;
+}
+
+@container table (max-width: 899px) {
+  .responsive-table,
+  .responsive-table tbody {
+    display: block;
+  }
+  .responsive-table thead {
+    display: none;
+  }
+  .responsive-table tr {
+    display: grid;
+    /* As many stat columns as fit (2 on a phone, 4 on a tablet). */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .responsive-table tr:last-child {
+    border-bottom: 0;
+  }
+  .responsive-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    white-space: normal;
+    text-align: right;
+  }
+  /* The column name, shown before each value. */
+  .responsive-table td[data-label]::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-size: 12px;
+    text-align: left;
+  }
+  .responsive-table td[colspan] {
+    grid-column: 1 / -1;
+  }
+
+  /* First line: name on the left, status badge on the right. */
+  .responsive-table .cell-title {
+    grid-column: 1 / -2;
+    grid-row: 1;
+    justify-content: flex-start;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+  }
+  .responsive-table .cell-status {
+    grid-column: -2 / -1;
+    grid-row: 1;
+    justify-content: flex-end;
+  }
+  .responsive-table .cell-wide,
+  .responsive-table .cell-actions {
+    grid-column: 1 / -1;
+  }
+  .responsive-table .cell-wide select {
+    flex: 0 1 65%;
+    max-width: 320px;
+    min-width: 0;
+  }
+
+  /* While renaming, the title takes the whole first line (status badge steps aside). */
+  .responsive-table .cell-title:has(.editable--editing) {
+    grid-column: 1 / -1;
+  }
+  .responsive-table tr:has(.cell-title .editable--editing) .cell-status {
+    display: none;
+  }
+
+  /* Touch-sized action buttons. */
+  .responsive-table .row-actions {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+  }
+  .responsive-table .row-actions .link-button {
+    flex: 1 1 auto;
+    min-height: 40px;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  /* Small links in the card title get a finger-sized hit area. */
+  .responsive-table .cell-title .link-button,
+  .responsive-table .cell-title a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 4px;
+  }
+}
+
+/* ==========================================================================
+   Touch screens (phones, tablets): finger-sized controls, no iOS zoom-in
+   ========================================================================== */
+
+@media (pointer: coarse), (max-width: 720px) {
+  /* iOS Safari zooms into any field with text smaller than 16px. */
+  input,
+  select,
+  .form input,
+  .form select {
+    font-size: 16px;
+  }
+  select,
+  .page-main button:not(.link-button):not(.editable__edit) {
+    min-height: 40px;
+  }
+
+  /* Owner-link actions in the business header. */
+  .business-header__owner .link-button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+  }
+
+  /* Inline editing */
+  .editable__edit {
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 16px;
+  }
+  .editable--editing input {
+    font-size: 16px;
+  }
+}
+
+/* ==========================================================================
+   Narrow screens (phones): stack the header, tighten spacing
+   ========================================================================== */
+
+@media (max-width: 720px) {
+  .page-header__inner {
+    padding: 12px 16px;
+  }
+  .page-header .toolbar {
+    width: 100%;
+  }
+  .page-header .toolbar select {
+    flex: 1;
+    min-width: 0;
+  }
+  .page-main {
+    gap: 12px;
+    padding-top: 16px;
+  }
+
+  .editable--editing {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .editable--editing input {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+  }
+  .editable--editing .link-button {
+    padding: 8px 10px;
+  }
+}

@@ -53,6 +53,28 @@ describe("/api/businesses", () => {
     expect(empty.error).toBe("Nothing to update");
   });
 
+  it("renames a business everywhere it appears", async () => {
+    const { business } = await createBusinessWithCard("Old Name");
+
+    await adminApi("PATCH", `/api/businesses/${business.id}`, { name: "  New Name  " });
+
+    const [listed] = await adminApi("GET", "/api/businesses");
+    expect(listed).toMatchObject({ id: business.id, name: "New Name" });
+    const [card] = await adminApi("GET", "/api/cards");
+    expect(card.businessName).toBe("New Name");
+    const stats = await adminApi("GET", "/api/stats");
+    expect(stats.businesses[0].name).toBe("New Name");
+  });
+
+  it("refuses an empty business name", async () => {
+    const { business } = await createBusinessWithCard("Keep Me");
+
+    await adminApi("PATCH", `/api/businesses/${business.id}`, { name: "   " }, 400);
+
+    const [listed] = await adminApi("GET", "/api/businesses");
+    expect(listed.name).toBe("Keep Me");
+  });
+
   it("returns 404 for unknown businesses", async () => {
     await adminApi("PATCH", "/api/businesses/nope", { active: false }, 404);
     await adminApi("DELETE", "/api/businesses/nope", undefined, 404);
@@ -92,6 +114,20 @@ describe("/api/cards", () => {
     await adminApi("PATCH", `/api/cards/${blank.id}`, { businessId: business.id });
 
     expect((await tap(blank.id)).status).toBe(302);
+  });
+
+  it("sets, trims and clears a card label", async () => {
+    const [card] = await adminApi("POST", "/api/cards", { label: "Old" });
+    const labelOf = async () =>
+      (await adminApi("GET", "/api/cards")).find((c: { id: string }) => c.id === card.id).label;
+
+    await adminApi("PATCH", `/api/cards/${card.id}`, { label: "  Window  " });
+    expect(await labelOf()).toBe("Window");
+
+    await adminApi("PATCH", `/api/cards/${card.id}`, { label: "" });
+    expect(await labelOf()).toBeNull();
+
+    await adminApi("PATCH", `/api/cards/${card.id}`, { label: "x".repeat(101) }, 400);
   });
 
   it("rejects unknown businesses and too many cards", async () => {

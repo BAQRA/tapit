@@ -5,7 +5,9 @@ import { StatusPill } from "../../components/StatusPill";
 import { Trend } from "../../components/Trend";
 import { formatNumber } from "../../lib/format";
 import { useBusinessActions } from "../useBusinessActions";
+import { EditableText } from "./EditableText";
 import { LinkButton } from "./LinkButton";
+import { RowActions } from "./RowActions";
 
 interface BusinessTableProps {
   businesses: BusinessStats[];
@@ -21,7 +23,7 @@ export function BusinessTable({ businesses, ownerUrls, days, onSelect }: Busines
   return (
     <Panel title="Businesses">
       <div className="table-scroll">
-        <table>
+        <table className="responsive-table">
           <thead>
             <tr>
               <th>Name</th>
@@ -54,59 +56,76 @@ export function BusinessTable({ businesses, ownerUrls, days, onSelect }: Busines
             )}
             {businesses.map((business) => (
               <tr key={business.id}>
-                <td>
-                  <LinkButton title="Show stats for this business" onClick={() => onSelect(business.id)}>
-                    {business.name}
-                  </LinkButton>{" "}
-                  <a
-                    href={business.reviewUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted"
-                    title="Open review page"
+                <td className="cell-title">
+                  <EditableText
+                    value={business.name}
+                    label="Business name"
+                    required
+                    maxLength={200}
+                    onSave={(name) => actions.rename(business, name)}
                   >
-                    ↗
-                  </a>
+                    <LinkButton title="Show stats for this business" onClick={() => onSelect(business.id)}>
+                      {business.name}
+                    </LinkButton>
+                    <a
+                      href={business.reviewUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted"
+                      title="Open review page"
+                    >
+                      ↗
+                    </a>
+                  </EditableText>
                 </td>
-                <td className="num">{formatNumber(business.cardCount)}</td>
-                <td className="num">
+                <td className="num" data-label="Cards">
+                  {formatNumber(business.cardCount)}
+                </td>
+                <td className="num" data-label="Taps">
                   <strong>{formatNumber(business.taps)}</strong>
                 </td>
-                <td className="num">
+                <td className="num" data-label="vs prev.">
                   <Trend current={business.taps} previous={business.previousTaps} />
                 </td>
-                <td className="num">{formatNumber(business.tapsToday)}</td>
-                <td className="num">{formatNumber(business.visitors)}</td>
-                <td className="num">{(business.taps / days).toFixed(1)}</td>
-                <td className="num">
+                <td className="num" data-label="Today">
+                  {formatNumber(business.tapsToday)}
+                </td>
+                <td className="num" data-label="Visitors">
+                  {formatNumber(business.visitors)}
+                </td>
+                <td className="num" data-label="Per day">
+                  {(business.taps / days).toFixed(1)}
+                </td>
+                <td className="num" data-label="iPhone / Android">
                   {formatNumber(business.iosTaps)} / {formatNumber(business.androidTaps)}
                 </td>
-                <td className="num">
+                <td className="num" data-label="Blocked">
                   <span className={business.blockedTaps ? "text-bad" : "text-muted"}>
                     {formatNumber(business.blockedTaps)}
                   </span>
                 </td>
-                <td>
+                <td data-label="Last tap">
                   <LastTap at={business.lastTapAt} />
                 </td>
-                <td>
+                <td className="cell-status">
                   <StatusPill active={business.active} />
                 </td>
-                <td>
-                  <LinkButton onClick={() => actions.togglePaused(business)}>
-                    {business.active ? "Pause" : "Resume"}
-                  </LinkButton>{" "}
-                  · <LinkButton onClick={() => actions.changeReviewUrl(business)}>Change link</LinkButton> ·{" "}
-                  <LinkButton
-                    title="Copy the owner's dashboard link (creates one if needed)"
-                    onClick={() => actions.copyOwnerLink(business.id, ownerUrls.get(business.id) ?? null)}
-                  >
-                    Owner link
-                  </LinkButton>{" "}
-                  ·{" "}
-                  <LinkButton danger onClick={() => actions.delete(business)}>
-                    Delete
-                  </LinkButton>
+                <td className="cell-actions">
+                  <RowActions>
+                    <LinkButton onClick={() => actions.togglePaused(business)}>
+                      {business.active ? "Pause" : "Resume"}
+                    </LinkButton>
+                    <LinkButton onClick={() => actions.changeReviewUrl(business)}>Change link</LinkButton>
+                    <LinkButton
+                      title="Copy the owner's dashboard link (creates one if needed)"
+                      onClick={() => actions.copyOwnerLink(business.id, ownerUrls.get(business.id) ?? null)}
+                    >
+                      Owner link
+                    </LinkButton>
+                    <LinkButton danger onClick={() => actions.delete(business)}>
+                      Delete
+                    </LinkButton>
+                  </RowActions>
                 </td>
               </tr>
             ))}

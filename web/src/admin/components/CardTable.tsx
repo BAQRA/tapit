@@ -6,7 +6,9 @@ import { formatNumber } from "../../lib/format";
 import { adminApi } from "../api";
 import { useAdminAction, useCopy } from "../queries";
 import { BusinessSelect } from "./BusinessSelect";
+import { EditableText } from "./EditableText";
 import { LinkButton } from "./LinkButton";
+import { RowActions } from "./RowActions";
 
 interface CardTableProps {
   cards: AdminStats["cards"];
@@ -18,6 +20,10 @@ export function CardTable({ cards, businesses }: CardTableProps) {
   const assign = useAdminAction(
     (v: { id: string; businessId: string | null }) => adminApi.updateCard(v.id, { businessId: v.businessId }),
     { success: "Card reassigned" },
+  );
+  const setLabel = useAdminAction(
+    (v: { id: string; label: string }) => adminApi.updateCard(v.id, { label: v.label || null }),
+    { success: "Label saved" },
   );
   const setActive = useAdminAction((v: { id: string; active: boolean }) =>
     adminApi.updateCard(v.id, { active: v.active }),
@@ -35,7 +41,7 @@ export function CardTable({ cards, businesses }: CardTableProps) {
   return (
     <Panel title="Cards">
       <div className="table-scroll">
-        <table>
+        <table className="responsive-table">
           <thead>
             <tr>
               <th>Card</th>
@@ -57,11 +63,21 @@ export function CardTable({ cards, businesses }: CardTableProps) {
             )}
             {cards.map((card) => (
               <tr key={card.id}>
-                <td>
+                <td className="cell-title">
                   <code>{card.id}</code>
                 </td>
-                <td>{card.label || <span className="text-muted">—</span>}</td>
-                <td>
+                <td className="cell-wide" data-label="Label">
+                  <EditableText
+                    value={card.label}
+                    label="Card label"
+                    maxLength={100}
+                    placeholder="e.g. Front desk"
+                    onSave={(label) => setLabel.mutateAsync({ id: card.id, label })}
+                  >
+                    {card.label || <span className="text-muted">—</span>}
+                  </EditableText>
+                </td>
+                <td className="cell-wide" data-label="Business">
                   <BusinessSelect
                     aria-label={`Business for card ${card.id}`}
                     businesses={businesses}
@@ -70,22 +86,25 @@ export function CardTable({ cards, businesses }: CardTableProps) {
                     onChange={(businessId) => assign.mutate({ id: card.id, businessId })}
                   />
                 </td>
-                <td className="num">{formatNumber(card.taps)}</td>
-                <td>
+                <td className="num" data-label="Taps">
+                  {formatNumber(card.taps)}
+                </td>
+                <td data-label="Last tap">
                   <LastTap at={card.lastTapAt} />
                 </td>
-                <td>
+                <td className="cell-status">
                   <StatusPill active={card.active} off="disabled" />
                 </td>
-                <td>
-                  <LinkButton onClick={() => copy(card.url)}>Copy URL</LinkButton> ·{" "}
-                  <LinkButton onClick={() => setActive.mutate({ id: card.id, active: !card.active })}>
-                    {card.active ? "Disable" : "Enable"}
-                  </LinkButton>{" "}
-                  ·{" "}
-                  <LinkButton danger onClick={() => confirmDelete(card.id)}>
-                    Delete
-                  </LinkButton>
+                <td className="cell-actions">
+                  <RowActions>
+                    <LinkButton onClick={() => copy(card.url)}>Copy URL</LinkButton>
+                    <LinkButton onClick={() => setActive.mutate({ id: card.id, active: !card.active })}>
+                      {card.active ? "Disable" : "Enable"}
+                    </LinkButton>
+                    <LinkButton danger onClick={() => confirmDelete(card.id)}>
+                      Delete
+                    </LinkButton>
+                  </RowActions>
                 </td>
               </tr>
             ))}
