@@ -131,7 +131,7 @@ npx wrangler secret put IP_SALT        # any long random string
 npm run check && npm run deploy
 ```
 
-Your dashboard is then at `https://tapit.<your-subdomain>.workers.dev/admin`.
+Your dashboard is then at `https://go.<your-account-subdomain>.workers.dev/admin`.
 
 ### Start free now, add tapit.ge later
 

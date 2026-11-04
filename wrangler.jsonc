@@ -1,9 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
 
-  // Part of the free URL: https://<name>.<account-subdomain>.workers.dev
+  // Part of the free URL: https://go.<account-subdomain>.workers.dev
   // NEVER rename once cards are written with the workers.dev link.
-  "name": "tapit",
+  "name": "go",
   "main": "src/index.ts",
   "compatibility_date": "2025-09-01",
   "observability": { "enabled": true },
@@ -24,8 +24,8 @@
     {
       "binding": "DB",
       "database_name": "tapit",
-      // Replace with the id printed by `npx wrangler d1 create tapit`
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      // Production database (region EEUR), created with `npx wrangler d1 create tapit`
+      "database_id": "bf785eb4-ebae-4b22-8723-6f5b8cf82b2e",
       "migrations_dir": "migrations",
     },
   ],
