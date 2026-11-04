@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "vite build && node scripts/check-build.mjs",
     "preview": "vite preview",
     "deploy": "npm run build && wrangler deploy --config dist/go/wrangler.json",
     "test": "vitest run",

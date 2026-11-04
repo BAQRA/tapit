@@ -45,7 +45,9 @@ export default defineConfig({
             codeSplitting: {
               groups: [
                 { name: "vendor", test: /node_modules/ },
-                { name: "shared", test: /web\/src\/(components|lib|styles)\// },
+                // Only code/styles both pages use. admin.css and owner.css must stay with
+                // their own page: bundled together, owner.css overrides the admin layout.
+                { name: "shared", test: /web\/src\/(components|lib)\/|web\/src\/styles\/base\.css/ },
               ],
             },
           },
