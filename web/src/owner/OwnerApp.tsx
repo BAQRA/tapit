@@ -1,6 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import type { OwnerStats } from "../../../shared/api";
+import { BrandLogo } from "../components/BrandLogo";
 import { Kpi } from "../components/Kpi";
 import { LastTap } from "../components/LastTap";
 import { Panel } from "../components/Panel";
@@ -41,7 +42,7 @@ export function OwnerApp() {
       <header className="page-header">
         <div className="page-header__inner container">
           <div>
-            <div className="brand">TapIT</div>
+            <BrandLogo height={22} className="brand" />
             <h1 className="business-name">
               {isError ? "This link is no longer active" : (stats?.business.name ?? "Loading…")}
             </h1>

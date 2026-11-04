@@ -1,14 +1,32 @@
 /* Shared design tokens and components for the admin and owner dashboards. */
 
+/*
+ * TapIT palette, from the logo kit:
+ *   ink   #1B1F2B  "Tap" and the card outline
+ *   brand #4F63F0  "IT"
+ *
+ * Text contrast (WCAG AA needs 4.5:1): brand on white 4.8:1 ✓, but brand on ink is
+ * only 3.4:1, so dark mode uses a lighter tint (#8293F7, 5.8:1) for text and links
+ * and keeps the true brand blue for buttons and chart bars (non-text needs 3:1).
+ */
 :root {
-  --bg: #f6f5f2;
+  --brand: #4f63f0;
+  --brand-hover: #3f51db;
+  --ink: #1b1f2b;
+
+  --bg: #f4f5f9;
   --panel: #ffffff;
-  --text: #1d1d1b;
-  --muted: #6b6a66;
-  --line: #e4e2dc;
-  --accent: #2f6fde;
-  --accent-soft: #e6eefc;
-  --good: #1f8a4c;
+  --text: var(--ink);
+  --muted: #5e6474;
+  --line: #e2e4ec;
+  /* Links, highlighted text and outlines. */
+  --accent: var(--brand);
+  --accent-soft: #e8ebfd;
+  /* Chart bars and progress fills. */
+  --bar: var(--brand);
+  --on-brand: #ffffff;
+
+  --good: #1a7f47;
   --bad: #c2412d;
   --warn-bg: #fdf0e6;
   --warn: #9a4a12;
@@ -17,13 +35,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #141413;
-    --panel: #1e1e1c;
-    --text: #ecebe6;
-    --muted: #9a9892;
-    --line: #2f2f2c;
-    --accent: #6d9cf0;
-    --accent-soft: #23314a;
+    --bg: #12141c;
+    --panel: var(--ink);
+    --text: #eceef4;
+    --muted: #9aa0b2;
+    --line: #2b3040;
+    --accent: #8293f7;
+    --accent-soft: #262c4a;
+    --bar: #6577f3;
     --good: #4cc27d;
     --bad: #ef7a64;
     --warn-bg: #3a2616;
@@ -147,7 +166,7 @@ code {
 }
 .bar-chart > div {
   flex: 1;
-  background: var(--accent);
+  background: var(--bar);
   border-radius: 2px 2px 0 0;
   min-height: 1px;
 }
@@ -179,7 +198,7 @@ code {
   overflow: hidden;
 }
 .bar-list__fill {
-  background: var(--accent);
+  background: var(--bar);
   height: 100%;
 }
 

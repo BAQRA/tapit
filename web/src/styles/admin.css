@@ -6,8 +6,17 @@
   z-index: 2;
 }
 .brand {
-  font-size: 17px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin: 0;
+}
+.brand__label {
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
 }
 .toolbar {
   display: flex;
@@ -77,9 +86,17 @@
   margin: 0;
 }
 .button-primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--on-brand);
+  font-weight: 600;
+}
+.button-primary:hover:not(:disabled) {
+  background: var(--brand-hover);
+  border-color: var(--brand-hover);
+}
+.button-primary:disabled {
+  opacity: 0.6;
 }
 
 .created-links {

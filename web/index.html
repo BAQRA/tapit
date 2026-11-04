@@ -3,36 +3,70 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TapIT</title>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#F4F5F9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#12141C" media="(prefers-color-scheme: dark)" />
+    <title>TapIT · NFC Google review cards</title>
+    <meta name="description" content="Tap your phone, leave a Google review. NFC review cards by TapIT." />
     <style>
+      :root {
+        --bg: #f4f5f9;
+        --text: #1b1f2b;
+        --muted: #5e6474;
+        --link: #4f63f0;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #12141c;
+          --text: #eceef4;
+          --muted: #9aa0b2;
+          --link: #8293f7;
+        }
+      }
       body {
-        font:
-          16px system-ui,
-          sans-serif;
+        margin: 0;
+        min-height: 100vh;
         display: grid;
         place-items: center;
-        min-height: 100vh;
-        margin: 0;
-        background: #f6f6f4;
-        color: #222;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
       }
       main {
+        display: grid;
+        justify-items: center;
+        gap: 20px;
+        padding: 24px 16px;
         text-align: center;
-        padding: 24px;
       }
-      h1 {
-        margin: 0 0 8px;
+      img {
+        width: min(260px, 70vw);
+        height: auto;
       }
       p {
         margin: 0;
-        color: #666;
+        color: var(--muted);
+      }
+      a {
+        color: var(--link);
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>TapIT</h1>
-      <p>NFC Google review cards · <a href="https://tapit.ge">tapit.ge</a></p>
+      <picture>
+        <source srcset="/brand/tapit-logo-white.svg" media="(prefers-color-scheme: dark)" />
+        <img src="/brand/tapit-logo.svg" alt="TapIT" width="260" height="111" />
+      </picture>
+      <p>Tap your phone, leave a Google review.</p>
+      <p><a href="https://tapit.ge">tapit.ge</a></p>
     </main>
   </body>
 </html>

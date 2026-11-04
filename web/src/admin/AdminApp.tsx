@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { AdminStats } from "../../../shared/api";
+import { BrandLogo } from "../components/BrandLogo";
 import { Kpi } from "../components/Kpi";
 import { TapCharts } from "../components/TapCharts";
 import { formatNumber, timezoneOffsetMinutes } from "../lib/format";
@@ -51,7 +52,10 @@ export function AdminApp() {
     <>
       <header className="page-header sticky">
         <div className="page-header__inner">
-          <h1 className="brand">TapIT</h1>
+          <h1 className="brand">
+            <BrandLogo height={26} />
+            <span className="brand__label">Admin</span>
+          </h1>
           <div className="toolbar">
             <BusinessSelect
               aria-label="Business"
